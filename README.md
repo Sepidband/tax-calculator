@@ -126,10 +126,6 @@ go test -run TestCalculateTax ./tests
 | `PORT` | string | `8080` | No | Port number for the HTTP server to listen on | `3000` |
 | `LOG_LEVEL` | string | `info` | No | Logging level (trace, debug, info, warn, error, fatal, panic) | `debug` |
 
-## Configuration Examples
-
-### Development Environment
-```bash
 ### Tax Calculation Logic
 This application implements Canadian marginal tax rates:
 
@@ -138,12 +134,11 @@ This application implements Canadian marginal tax rates:
 3. Effective Rate: Total tax divided by total income
 
 #### Example Calculation for $100,000 (2022 rates):
-```bash
-Bracket 1: $0 - $50,197 at 15% = $7,529.55
-Bracket 2: $50,197 - $100,000 at 20.5% = $10,209.62
-Total Tax: $17,739.17
-Effective Rate: 17.74%
-```
+- Bracket 1: $0 - $50,197 at 15% = $7,529.55
+- Bracket 2: $50,197 - $100,000 at 20.5% = $10,209.62
+- Total Tax: $17,739.17
+- Effective Rate: 17.74%
+
 ### Error Handling
 The application handles several error scenarios:
 
