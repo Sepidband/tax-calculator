@@ -7,7 +7,6 @@ A Canadian income tax calculator with REST API and web interface.
 -  Calculate total income tax using marginal tax rates
 -  Breakdown by tax brackets
 -  Effective tax rate calculation
--  REST API with OpenAPI documentation
 -  Simple web interface
 -  Automatic retry logic for API failures
 -  Comprehensive logging
@@ -100,7 +99,6 @@ tax-calculator/
 │   ├── script.js
 │   └── style.css
 ├── tests/                      # Test files
-├── docs/                       # Generated API docs
 └── README.md
 ```
 
