@@ -1,0 +1,89 @@
+basePath: /api/v1
+definitions:
+  internal_api.CalculateTaxRequest:
+    properties:
+      salary:
+        minimum: 0
+        type: number
+      year:
+        type: integer
+    required:
+    - salary
+    - year
+    type: object
+  internal_api.ErrorResponse:
+    properties:
+      error:
+        example: Invalid request parameters
+        type: string
+    type: object
+  tax-calculator_internal_api.CalculateTaxRequest:
+    properties:
+      salary:
+        minimum: 0
+        type: number
+      year:
+        type: integer
+    required:
+    - salary
+    - year
+    type: object
+  tax-calculator_internal_api.ErrorResponse:
+    properties:
+      error:
+        example: Invalid request parameters
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Canadian income tax calculator API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Tax Calculator API
+  version: "1.0"
+paths:
+  /calculate-tax:
+    post:
+      consumes:
+      - application/json
+      description: Calculate total income tax, effective rate, and breakdown by tax
+        brackets for Canadian tax system
+      parameters:
+      - description: Tax calculation request with annual salary and tax year
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/tax-calculator_internal_api.CalculateTaxRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/tax-calculator_internal_api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/tax-calculator_internal_api.ErrorResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/tax-calculator_internal_api.ErrorResponse'
+      summary: Calculate income tax
+      tags:
+      - tax
+schemes:
+- http
+swagger: "2.0"

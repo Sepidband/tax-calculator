@@ -1,16 +1,37 @@
+// cmd/server/main.go
 package main
 
 import (
 	"log"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
+	_ "tax-calculator/docs"
 	"tax-calculator/internal/api"
 	"tax-calculator/internal/calculator"
 	"tax-calculator/internal/client"
 )
+
+// @title Tax Calculator API
+// @version 1.0
+// @description Canadian income tax calculator API
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:8080
+// @BasePath /api/v1
+// @schemes http
 
 func main() {
 	logger := logrus.New()
@@ -28,18 +49,29 @@ func main() {
 	// Setup routes
 	router := gin.Default()
 
-	// CORS middleware BEFORE your routes
+	// CORS middleware BEFORE routes
 	router.Use(CORSMiddleware())
 
-	// Serve static files
+	// Serve static files and API routes
 	router.Static("/static", "./frontend")
 	router.StaticFile("/", "./frontend/index.html")
 	router.POST("/api/v1/calculate-tax", handler.CalculateTax)
-	router.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "healthy"})
+	// Simple heath check
+	router.GET("/api/v1/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status":    "healthy",
+			"service":   "tax-calculator",
+			"timestamp": time.Now().Unix(),
+		})
 	})
 
+	// Swagger documentation route
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// Start server
+
 	logger.Infof("Starting server on port %s", port)
+	logger.Infof("Swagger docs available at: http://localhost:%s/swagger/index.html", port)
 	log.Fatal(router.Run(":" + port))
 }
 
